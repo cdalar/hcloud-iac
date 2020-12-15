@@ -1,0 +1,21 @@
+- name: install helm on master
+  hosts: master1
+
+  tasks:
+  - name: Add an Apt signing key, uses whichever key is at the URL
+    apt_key:
+      url: https://baltocdn.com/helm/signing.asc
+      state: present
+  - name: install apt-transport-https 
+    apt:
+      pkg: 
+        - apt-transport-https
+  - name: add source.list for helm
+    shell: |
+      echo "deb https://baltocdn.com/helm/stable/debian/ all main" | sudo tee /etc/apt/sources.list.d/helm-stable-debian.list
+
+  - name: install helm
+    apt:
+      pkg:
+        - helm
+      update_cache: yes
