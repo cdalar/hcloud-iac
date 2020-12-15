@@ -1,0 +1,10 @@
+- name: Update servers
+  hosts: hcloud
+
+  tasks:
+  - name: Update apt-get dist-upgrade
+    apt:
+      upgrade: dist
+      update_cache: yes
+
+

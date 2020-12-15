@@ -1,0 +1,20 @@
+- name: sysctl setup for networking. 
+  hosts: hcloud
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+    sysctl_config:
+      net.bridge.bridge-nf-call-iptables: 1
+      net.ipv4.ip_forward: 1
+      net.ipv6.conf.default.forwarding: 1
+
+  tasks:
+   - name: Change various sysctl-settings
+     sysctl:
+       name: '{{ item.key }}'
+       value: '{{ item.value }}'
+       sysctl_set: yes
+       state: present
+       reload: yes
+       ignoreerrors: yes
+     with_dict: '{{ sysctl_config }}'
+

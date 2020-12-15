@@ -1,0 +1,18 @@
+- name: configure docker cgroup on master
+  hosts: master1
+
+  tasks:
+  - name : kubeadm - install control plane to master1 images pull
+    shell: 
+      kubeadm config images pull 
+  - name : kubeadm - install control plane to master1 / init
+    shell: 
+      kubeadm init --pod-network-cidr=10.155.0.0/16 --ignore-preflight-errors=NumCPU --apiserver-cert-extra-sans 10.10.0.10
+  - name : setup .kube/config file
+    shell: |
+      mkdir -p $HOME/.kube
+      sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+      sudo chown $(id -u):$(id -g) $HOME/.kube/config
+  - name: get kubeadm join command
+    shell:
+      kubeadm token create --print-join-command > /tmp/kubeadm_join.sh

@@ -1,0 +1,15 @@
+- name: configure kubelet on master
+  hosts: hcloud
+
+  tasks:
+  - name : create kubelet.service.d directory if doesn't exists
+    file:
+      path: /etc/systemd/system/kubelet.service.d 
+      state: directory
+  - name: copy kubelet env file to enable --cloud-provider=external
+    copy:
+      src: 20-hetzner-cloud.conf
+      dest: /etc/systemd/system/kubelet.service.d/20-hcloud.conf
+      owner: root
+      group: root
+      mode: '0644'

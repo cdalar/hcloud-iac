@@ -1,0 +1,7 @@
+- name: tolerate uninitialized node
+  hosts: master1
+
+  tasks:
+  - name : tolerate uninitialized node
+    shell: 
+      kubectl -n kube-system patch deployment coredns --type json -p '[{"op":"add","path":"/spec/template/spec/tolerations/-","value":{"key":"node.cloudprovider.kubernetes.io/uninitialized","value":"true","effect":"NoSchedule"}}]'

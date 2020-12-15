@@ -1,0 +1,26 @@
+- name: update
+  import_playbook: update.yml
+- name: kublet
+  import_playbook: kubelet.yml
+- name: docker
+  import_playbook: docker.yml
+- name: helm
+  import_playbook: helm.yml
+- name: sysctl
+  import_playbook: sysctl.yml
+- name: kubeadm - install k8s
+  import_playbook: kubeadm.yml
+- name: create hcloud secrets
+  import_playbook: hcloud-secrets.yml
+- name: get join command
+  import_playbook: get-join.yml
+- name: coredns-taint
+  import_playbook: coredns-taint.yml
+- name: cilium install
+  import_playbook: cilium.yml
+- name: install cloud controller
+  import_playbook: cloud-controller.yml
+- name: install hcloud csi controller
+  import_playbook: hcloud-csi.yml
+- name: kubeadm join nodes
+  import_playbook: join.yml

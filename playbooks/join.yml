@@ -1,0 +1,7 @@
+- name: join nodes to k8s
+  hosts: worker1,worker2,worker3
+
+  tasks:
+  - name: send kubeadm join command on worker nodes
+    shell:
+      "{{ lookup('file','../kubeadm_join.sh') }}"

@@ -1,0 +1,7 @@
+- name: configure CNI - cilium
+  hosts: master1
+
+  tasks:
+  - name : apply cilium install yml 
+    shell: 
+      kubectl create -f https://raw.githubusercontent.com/cilium/cilium/v1.8/install/kubernetes/quick-install.yaml

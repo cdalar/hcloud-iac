@@ -1,0 +1,7 @@
+- name: install hcloud cloud controller manager
+  hosts: master1
+
+  tasks:
+  - name: install hcloud cloud controller manager
+    shell:
+      kubectl apply -f  https://raw.githubusercontent.com/hetznercloud/hcloud-cloud-controller-manager/master/deploy/ccm.yaml

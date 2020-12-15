@@ -1,0 +1,17 @@
+- name: get connection files from master node
+  hosts: master1
+
+  tasks:
+  - name: fetch join command from master
+    fetch:
+      src: /tmp/kubeadm_join.sh
+      dest: ./
+      flat: yes
+  - name: copy kubeconfig to /tmp
+    shell: 
+      cp /etc/kubernetes/admin.conf /tmp/config
+  - name: fetch kubeconfig from master
+    fetch:
+      src: /tmp/config
+      dest: ./config
+      flat: yes

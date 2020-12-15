@@ -1,0 +1,43 @@
+- name: configure docker cgroup on master
+  hosts: master1,worker1,worker2,worker3
+
+  tasks:
+  - name : create docker.service.d directory if doesn't exists
+    file:
+      path: /etc/systemd/system/docker.service.d 
+      state: directory
+  - name: copy docker cgroup systemd file to enable 
+    copy:
+      src: 00-cgroup-systemd.conf
+      dest: /etc/systemd/system/docker.service.d/00-cgroup-systemd.conf
+      owner: root
+      group: root
+      mode: '0644'
+  - name: systemd restart
+    systemd:
+      daemon_reload: yes
+  - name: Add an Apt signing key, uses whichever key is at the URL
+    apt_key:
+      url: https://download.docker.com/linux/ubuntu/gpg
+      state: present
+  - name: Add an Apt signing key, uses whichever key is at the URL
+    apt_key:
+      url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+      state: present
+  - name: add source.list for docker and kubernetes
+    shell: |
+      cat <<EOF >/etc/apt/sources.list.d/docker-and-kubernetes.list
+      deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable
+      deb http://packages.cloud.google.com/apt/ kubernetes-xenial main
+      EOF
+  - name: install docker-ce kubeadm kubectl kubelet
+    apt:
+      pkg:
+        - docker-ce
+        - kubeadm=1.18.10-00
+        - kubectl=1.18.10-00 
+        - kubelet=1.18.10-00
+      update_cache: yes
+  - name: apt-mark hold
+    shell: 
+      apt-mark hold kubelet kubeadm kubectl
